@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DarkChain — Agents that fix supply chains at the root</title>
+  <meta name="description" content="We send AI agents into the parts of supply chain that quietly break. Not a chatbot. The operational layer your ops team has been doing by hand." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #FAF1DA;
+      --cream-deep: #F2E6BF;
+      --yellow: #FFC93C;
+      --yellow-soft: #FFDD7A;
+      --coral: #E54B30;
+      --coral-deep: #B83523;
+      --navy: #15233F;
+      --ink: #1A1A1A;
+      --ink-soft: #4A4A4A;
+      --line: rgba(21, 35, 63, 0.18);
+      --line-soft: rgba(21, 35, 63, 0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .display {
+      font-family: 'Fraunces', Georgia, serif;
+      font-optical-sizing: auto;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+    }
+
+    .display-italic {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 700;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      background: var(--cream);
+      border-bottom: 1.5px solid var(--ink);
+    }
+    .logo {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 800; font-size: 1.4rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .logo .dot { color: var(--coral); }
+    nav .nav-links { display: flex; gap: 2rem; align-items: center; }
+    nav a.nav-link {
+      color: var(--ink);
+      font-size: 0.92rem; font-weight: 500;
+    }
+    nav a.nav-link:hover { color: var(--coral); }
+    nav .nav-cta {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 0.6rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.88rem; font-weight: 600;
+    }
+    nav .nav-cta:hover { background: var(--coral); color: var(--cream); }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 2.5rem 5rem;
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--ink);
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+      border: 1.5px solid var(--ink);
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 7.2vw, 5.6rem);
+      max-width: 980px;
+      margin-bottom: 2rem;
+    }
+    .hero h1 .underline {
+      text-decoration: underline;
+      text-decoration-color: var(--coral);
+      text-decoration-thickness: 6px;
+      text-underline-offset: 8px;
+    }
+    .hero h1 em { color: var(--coral); }
+    .hero-sub {
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      max-width: 640px;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.95rem 1.6rem;
+      border-radius: 100px;
+      font-size: 0.95rem; font-weight: 600;
+      border: 1.5px solid var(--ink);
+      cursor: pointer; transition: transform 0.15s, background 0.2s;
+    }
+    .btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+    .btn-primary { background: var(--ink); color: var(--cream); }
+    .btn-primary:hover { background: var(--coral); }
+    .btn-secondary { background: var(--yellow); color: var(--ink); }
+
+    /* MARQUEE STRIP */
+    .strip {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1rem 0;
+      overflow: hidden;
+      border-top: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+    }
+    .strip-inner {
+      display: flex; gap: 3rem;
+      white-space: nowrap;
+      animation: scroll 28s linear infinite;
+    }
+    .strip-inner span {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      font-weight: 500;
+    }
+    .strip-inner .dot {
+      color: var(--yellow);
+    }
+    @keyframes scroll {
+      to { transform: translateX(-50%); }
+    }
+
+    /* SECTION SHARED */
+    section { padding: 5rem 2.5rem; }
+    .container { max-width: 1180px; margin: 0 auto; }
+    .label {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--coral);
+      margin-bottom: 1rem;
+    }
+    .label::before {
+      content: '';
+      display: inline-block; width: 18px; height: 1.5px;
+      background: var(--coral);
+    }
+    h2.section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    h2.section-title em { font-style: italic; color: var(--coral); }
+    .section-lede {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+
+    /* MANIFESTO BAND */
+    .manifesto {
+      background: var(--yellow);
+      border-top: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+      padding: 5.5rem 2.5rem;
+    }
+    .manifesto .container { max-width: 920px; }
+    .manifesto p {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 2.3vw, 1.85rem);
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .manifesto p + p { margin-top: 1.25rem; }
+    .manifesto strong {
+      background: var(--cream);
+      padding: 0 0.3rem;
+      border: 1.5px solid var(--ink);
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .manifesto em { font-style: italic; color: var(--coral-deep); }
+
+    /* CAPABILITIES */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .cap-card {
+      background: var(--cream-deep);
+      border: 1.5px solid var(--ink);
+      border-radius: 18px;
+      padding: 1.75rem;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .cap-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+    .cap-card .num {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: var(--coral);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .cap-card h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
+      line-height: 1.2;
+    }
+    .cap-card p {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+    .cap-card.accent { background: var(--yellow-soft); }
+
+    /* FEED PLACEHOLDER */
+    .feed {
+      background: var(--navy);
+      color: var(--cream);
+      border-top: 1.5px solid var(--ink);
+      border-bottom: 1.5px solid var(--ink);
+    }
+    .feed .label { color: var(--yellow); }
+    .feed .label::before { background: var(--yellow); }
+    .feed h2.section-title { color: var(--cream); }
+    .feed h2.section-title em { color: var(--yellow); }
+    .feed .section-lede { color: rgba(250, 241, 218, 0.78); }
+
+    .feed-carousel {
+      position: relative;
+      margin-top: 2.5rem;
+    }
+    .feed-grid {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      padding: 0.25rem 0 1rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 201, 60, 0.4) transparent;
+    }
+    .feed-grid::-webkit-scrollbar { height: 6px; }
+    .feed-grid::-webkit-scrollbar-track { background: transparent; }
+    .feed-grid::-webkit-scrollbar-thumb {
+      background: rgba(255, 201, 60, 0.4);
+      border-radius: 100px;
+    }
+    .feed-card {
+      background: rgba(255, 201, 60, 0.06);
+      border: 1.5px solid rgba(255, 201, 60, 0.35);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      position: relative;
+      flex: 0 0 270px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+    }
+    .feed-card p { flex: 1; }
+    .feed-controls {
+      display: flex; gap: 0.5rem; justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+    .feed-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 201, 60, 0.1);
+      border: 1.5px solid rgba(255, 201, 60, 0.45);
+      color: var(--yellow);
+      cursor: pointer;
+      font-size: 1.05rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .feed-btn:hover {
+      background: var(--yellow);
+      color: var(--navy);
+      transform: scale(1.05);
+    }
+    .feed-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .feed-card .meta {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--yellow);
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+    .feed-card .meta::after {
+      content: '';
+      flex: 1; height: 1px;
+      background: rgba(255, 201, 60, 0.25);
+    }
+    .feed-card h4 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+      color: var(--cream);
+    }
+    .feed-card p {
+      font-size: 0.85rem;
+      color: rgba(250, 241, 218, 0.72);
+      line-height: 1.55;
+    }
+    .feed-card .tag {
+      display: inline-block;
+      margin-top: 0.7rem;
+      background: var(--yellow);
+      color: var(--navy);
+      padding: 0.15rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .feed-placeholder {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border: 1.5px dashed rgba(255, 201, 60, 0.5);
+      border-radius: 12px;
+      color: rgba(250, 241, 218, 0.55);
+      font-size: 0.88rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* CTA STRIP */
+    .cta {
+      padding: 6rem 2.5rem;
+      text-align: center;
+    }
+    .cta h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      max-width: 820px;
+      margin-left: auto; margin-right: auto;
+    }
+    .cta h2 em { font-style: italic; color: var(--coral); }
+    .cta p {
+      font-size: 1.1rem;
+      color: var(--ink-soft);
+      max-width: 540px;
+      margin: 0 auto 2rem;
+    }
+    .cta-email {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 1.1rem 1.8rem;
+      border-radius: 100px;
+      font-size: 1rem; font-weight: 600;
+      border: 1.5px solid var(--ink);
+      transition: transform 0.15s, background 0.2s;
+    }
+    .cta-email:hover {
+      background: var(--coral);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--cream-deep);
+      border-top: 1.5px solid var(--ink);
+      padding: 2.5rem 2.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    footer .logo { font-size: 1.1rem; }
+    footer .meta {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+    footer .meta a { color: var(--coral); }
+    footer .meta a:hover { text-decoration: underline; }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px) {
+      nav { padding: 1rem 1.25rem; }
+      nav .nav-links { gap: 1rem; }
+      nav .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding: 3rem 1.25rem 3rem; }
+      section { padding: 4rem 1.25rem; }
+      .manifesto { padding: 4rem 1.25rem; }
+      .cta { padding: 4rem 1.25rem; }
+      footer { padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">darkchain<span class="dot">.</span></a>
+    <div class="nav-links">
+      <a href="#what" class="nav-link">What we do</a>
+      <a href="#manifesto" class="nav-link">Manifesto</a>
+      <a href="#feed" class="nav-link">Signal</a>
+      <a href="#talk" class="nav-cta">Get in touch</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero-eyebrow">AI agents for supply chain operations</span>
+    <h1 class="display">We send agents into the parts of supply chain that <span class="underline">quietly break</span>.</h1>
+    <p class="hero-sub">Today's supply chains are held together by humans clicking between systems, chasing exceptions, and patching bad data. We are building the layer that does that work instead. Twenty-four hours a day. Without coffee. Without ego.</p>
+    <div class="hero-actions">
+      <a href="#what" class="btn btn-primary">See what they do →</a>
+      <a href="#talk" class="btn btn-secondary">Talk to us</a>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip-inner">
+      <span>Late shipments <span class="dot">•</span></span>
+      <span>Broken OTIF <span class="dot">•</span></span>
+      <span>Blown forecasts <span class="dot">•</span></span>
+      <span>Poisoned master data <span class="dot">•</span></span>
+      <span>Silent fulfillment failures <span class="dot">•</span></span>
+      <span>The 2am phone call from the warehouse <span class="dot">•</span></span>
+      <span>Late shipments <span class="dot">•</span></span>
+      <span>Broken OTIF <span class="dot">•</span></span>
+      <span>Blown forecasts <span class="dot">•</span></span>
+      <span>Poisoned master data <span class="dot">•</span></span>
+      <span>Silent fulfillment failures <span class="dot">•</span></span>
+      <span>The 2am phone call from the warehouse <span class="dot">•</span></span>
+    </div>
+  </div>
+
+  <!-- WHAT WE DO -->
+  <section id="what">
+    <div class="container">
+      <span class="label">What the agents do</span>
+      <h2 class="section-title">Three jobs your team is <em>tired of doing.</em></h2>
+      <p class="section-lede">Each agent owns one ugly, repetitive, high-leverage piece of the supply chain. They observe, decide, and act. Humans stay in the loop on the calls that matter and out of it on the calls that do not.</p>
+
+      <div class="cap-grid">
+        <div class="cap-card">
+          <div class="num">01</div>
+          <h3>Catch silent failures before the customer does</h3>
+          <p>Fulfillment workflows fail in small, quiet ways: a label not printed, an SO stuck in a sub-status, an ASN that never arrived. Our agents watch end-to-end, 24/7, and act on the exception while it is still cheap to fix.</p>
+        </div>
+
+        <div class="cap-card accent">
+          <div class="num">02</div>
+          <h3>Stitch the siloed systems together</h3>
+          <p>Order data lives in one system, inventory in another, shipping in a third, finance in a fourth. We make an order's whole journey visible and actionable, so OTIF trade-offs are made with the full picture, not the one screen someone happens to be looking at.</p>
+        </div>
+
+        <div class="cap-card">
+          <div class="num">03</div>
+          <h3>Guard the master data, forever</h3>
+          <p>Every downstream forecast and plan inherits whatever errors live upstream. Our agents continuously detect, correct, and prevent the master-data rot that quietly poisons your planning models.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section id="manifesto" class="manifesto">
+    <div class="container">
+      <span class="label">Why we are not a chatbot</span>
+      <p>We are not building <em>a chatbot.</em></p>
+      <p>We are building the <strong>day-to-day foundation</strong> that makes a supply chain genuinely resilient.</p>
+      <p>Agents that <em>observe, decide, and act.</em> Humans in the loop where it matters, and out of the loop where it doesn't.</p>
+      <p>That is the difference between AI as an assistant and AI as <em>the machine the operator uses.</em></p>
+    </div>
+  </section>
+
+  <!-- FEED -->
+  <section id="feed" class="feed">
+    <div class="container">
+      <span class="label">Signal</span>
+      <h2 class="section-title">Where the next <em>niches</em> are opening up.</h2>
+      <p class="section-lede">A live feed of industries shifting under geopolitical pressure and the white space inside them, where careers can be built and AI agents can be deployed. Useful if you are early in your career and trying to find a corner of the world to plant a flag in.</p>
+
+      <div class="feed-carousel">
+        <div class="feed-controls">
+          <button type="button" class="feed-btn" id="feed-prev" aria-label="Previous stories">←</button>
+          <button type="button" class="feed-btn" id="feed-next" aria-label="Next stories">→</button>
+        </div>
+
+        <div class="feed-grid" id="feed-grid">
+          <article class="feed-card">
+            <div class="meta">Jun 10, 2026</div>
+            <h4>Germany France Scrap Fighter Jet</h4>
+            <p>How four decades on a Pratt &amp; Whitney engine line in East Hartford, Connecticut, became a working biography of American air power. A composite life, drawn from real plant history.</p>
+            <a href="https://jevreman.substack.com/p/the-hot-section" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+
+          <article class="feed-card">
+            <div class="meta">May 30, 2026</div>
+            <h4>When governments stop spending, shopping changes</h4>
+            <p>Colombia's election candidates want to cut government spending. It ends up in supermarket aisles, phone top-up kiosks, and street food stalls faster than most people expect.</p>
+            <a href="https://jevreman.substack.com/p/when-governments-stop-spending-shopping" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+
+          <article class="feed-card">
+            <div class="meta">May 29, 2026</div>
+            <h4>Demand forecast: China and Taiwan unite</h4>
+            <p>What will happen to economic activity if China and Taiwan unite again. The Taiwan Strait risk premium decompresses, and a long list of second-order industries reprice overnight.</p>
+            <a href="https://jevreman.substack.com/p/demand-forecast-china-and-taiwan" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+
+          <article class="feed-card">
+            <div class="meta">May 24, 2026</div>
+            <h4>The new military economy</h4>
+            <p>Ukraine's drone war is inventing entire professions in real time, the way the automobile once invented the mechanic. And every new job drags a new school behind it. Here is the downstream future.</p>
+            <a href="https://jevreman.substack.com/p/the-new-military-economy" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+
+          <article class="feed-card">
+            <div class="meta">May 24, 2026</div>
+            <h4>The cargo that turned around in the Atlantic</h4>
+            <p>LNG is the only fuel that can change its mind mid-ocean. This is what happens when it does, and who loses a shift because of it.</p>
+            <a href="https://jevreman.substack.com/p/the-cargo-that-turned-around-in-the" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+
+          <article class="feed-card">
+            <div class="meta">May 24, 2026</div>
+            <h4>The gold bean generation</h4>
+            <p>China's young people are buying gold one pea at a time. It is the most important consumer story almost no one in the West is tracking.</p>
+            <a href="https://jevreman.substack.com/p/the-gold-bean-generation" target="_blank" rel="noopener" class="tag">Read →</a>
+          </article>
+        </div>
+      </div>
+
+      <div style="margin-top: 2.5rem; text-align: center;">
+        <a href="https://jevreman.substack.com/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap: 0.5rem; background: var(--yellow); color: var(--navy); padding: 0.95rem 1.6rem; border-radius: 100px; font-weight: 600; font-size: 0.95rem; border: 1.5px solid var(--yellow); transition: transform 0.15s;">
+          Read the full Substack →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="talk" class="cta">
+    <span class="label" style="display:inline-flex;">Get in touch</span>
+    <h2>If your supply chain is <em>quietly leaking,</em> we should talk.</h2>
+    <p>No demo deck. Just a 30-minute conversation about where you are losing money, time, or sleep. We figure out together whether agents are the answer.</p>
+    <a href="mailto:hello@darkchainai.com" class="cta-email">hello@darkchainai.com →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <a href="#" class="logo">darkchain<span style="color: var(--coral);">.</span></a>
+      <p class="meta">© 2026 DarkChain. Built for operators. <a href="mailto:hello@darkchainai.com">hello@darkchainai.com</a></p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var DIRECT = 'https://jevreman.substack.com/api/v1/archive?sort=new&limit=6';
+      var FALLBACK = 'https://corsproxy.io/?' + encodeURIComponent(DIRECT);
+
+      function fmtDate(s) {
+        try {
+          var d = new Date(s);
+          return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        } catch (e) { return ''; }
+      }
+
+      function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function truncate(s, n) {
+        if (!s) return '';
+        s = String(s).replace(/\s+/g, ' ').trim();
+        if (s.length <= n) return s;
+        return s.substring(0, n).replace(/\s+\S*$/, '') + '…';
+      }
+
+      function render(items) {
+        var grid = document.getElementById('feed-grid');
+        if (!grid || !items || !items.length) return;
+        grid.innerHTML = items.slice(0, 6).map(function (item) {
+          var title = escapeHtml(item.title || 'Untitled');
+          var date = escapeHtml(fmtDate(item.post_date));
+          var subtitle = item.subtitle || item.description || '';
+          var excerpt = escapeHtml(truncate(subtitle, 200));
+          var link = escapeHtml(item.canonical_url || '#');
+          return '' +
+            '<article class="feed-card">' +
+              '<div class="meta">' + (date || 'Story') + '</div>' +
+              '<h4>' + title + '</h4>' +
+              '<p>' + excerpt + '</p>' +
+              '<a href="' + link + '" target="_blank" rel="noopener" class="tag">Read →</a>' +
+            '</article>';
+        }).join('');
+        setupControls();
+      }
+
+      function setupControls() {
+        var grid = document.getElementById('feed-grid');
+        var prev = document.getElementById('feed-prev');
+        var next = document.getElementById('feed-next');
+        if (!grid || !prev || !next) return;
+
+        function scrollBy(dir) {
+          var card = grid.querySelector('.feed-card');
+          var step = card ? (card.offsetWidth + 16) : 286;
+          grid.scrollBy({ left: dir * step, behavior: 'smooth' });
+        }
+
+        function updateButtons() {
+          var atStart = grid.scrollLeft <= 5;
+          var atEnd = grid.scrollLeft + grid.clientWidth >= grid.scrollWidth - 5;
+          prev.disabled = atStart;
+          next.disabled = atEnd;
+        }
+
+        prev.addEventListener('click', function () { scrollBy(-1); });
+        next.addEventListener('click', function () { scrollBy(1); });
+        grid.addEventListener('scroll', updateButtons, { passive: true });
+        window.addEventListener('resize', updateButtons);
+        updateButtons();
+      }
+
+      function tryFetch(url) {
+        return fetch(url, { headers: { 'Accept': 'application/json' } })
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          });
+      }
+
+      // 1. Try direct Substack JSON API. 2. Fall back to CORS proxy. 3. Keep static cards.
+      tryFetch(DIRECT)
+        .catch(function () { return tryFetch(FALLBACK); })
+        .then(function (data) {
+          var items = Array.isArray(data) ? data : (data && data.contents ? JSON.parse(data.contents) : null);
+          if (items && items.length) {
+            render(items);
+          } else {
+            setupControls();
+          }
+        })
+        .catch(function () {
+          // Both attempts failed; the static cards already shown are real content.
+          setupControls();
+        });
+    })();
+  </script>
+
+</body>
+</html>
